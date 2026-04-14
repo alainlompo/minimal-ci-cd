@@ -22,7 +22,7 @@ app.get("/", (req, res) => {
         </style>
       </head>
       <body>
-        <h1>🚀 My Professional App</h1>
+        <h1>🚀 My Professional App (Auto Deployed) </h1>
         <button onclick="alert('It works! 🎉')">Click me</button>
       </body>
     </html>
