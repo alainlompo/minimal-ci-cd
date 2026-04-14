@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 
 const PORT = process.env.PORT || 3000;
+const version = process.env.RENDER_GIT_COMMIT || "dev";
 
 app.get("/", (req, res) => {
   res.send(`
@@ -23,6 +24,7 @@ app.get("/", (req, res) => {
       </head>
       <body>
         <h1>🚀 My Professional App (Auto Deployed) </h1>
+        <p>Version: ${version}</p>
         <button onclick="alert('It works! 🎉')">Click me</button>
         <p>Some additional changes</p>
       </body>
