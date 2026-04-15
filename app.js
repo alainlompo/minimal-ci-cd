@@ -27,6 +27,7 @@ app.get("/", (req, res) => {
         <p>Version: ${version}</p>
         <button onclick="alert('It works! 🎉')">Click me</button>
         <p>Some additional changes</p>
+        <p>Demo</p>
       </body>
     </html>
   `);
