@@ -1,0 +1,57 @@
+@startuml
+title CI/CD Pipeline - Azure DevOps to OpenShift
+
+skinparam shadowing false
+
+actor Developer
+
+rectangle "Azure DevOps" {
+    component "Azure Repos\n(Source Code)" as Repo
+    component "Pipeline Trigger" as Trigger
+}
+
+rectangle "Build & Test Stage" {
+    component "Maven Build\n(mvn clean install)" as Build
+    component "Unit Tests" as Test
+}
+
+rectangle "Containerization" {
+    component "Docker Build\n(OCI Image)" as DockerBuild
+}
+
+rectangle "Image Registry" {
+    component "Docker Hub\n(Image Repository)" as DockerRegistry
+}
+
+rectangle "Security & Quality Gates" {
+    component "Pull Image" as Pull
+    component "Trivy Scan\n(Vulnerability Scan)" as Scan
+    component "Quality Gate\n(Pass / Fail)" as Gate
+}
+
+rectangle "Deployment" {
+    component "OpenShift Deployment" as Deploy
+}
+
+Developer --> Repo : Commit Code
+Repo --> Trigger : Trigger Pipeline
+
+Trigger --> Build
+Build --> Test
+
+Test --> DockerBuild : If tests pass
+Test --> Trigger : If tests fail (Stop)
+
+DockerBuild --> DockerRegistry : Push Image
+
+DockerRegistry --> Pull : Pull Latest Image
+Pull --> Scan
+
+Scan --> Gate
+
+Gate --> Deploy : If Passed
+Gate --> Trigger : If Failed (Stop Pipeline)
+
+Deploy --> "OpenShift Cluster"
+
+@enduml
